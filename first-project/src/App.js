@@ -1,7 +1,10 @@
+import HelloWorld from './components/HelloWorld'
+
 function App() {
   return (
     <>
-      Clean project
+      <h1>Clean project</h1>
+      <HelloWorld />
     </>
   );
 }
