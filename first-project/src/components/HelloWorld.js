@@ -1,9 +1,11 @@
 import React from 'react'
 
 const HelloWorld = () => {
+  const greeting = 'username'
   return (
     <>
-      <h2>Hello World</h2>
+      <h2>Hello World: {greeting}</h2>
+
     </>
   )
 }
