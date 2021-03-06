@@ -2,6 +2,7 @@ import HelloWorld from './components/HelloWorld'
 import Counter from './components/Counter'
 import List from './components/List'
 import IsLogged from './components/IsLogged'
+import BasicForm from './components/BasicForm'
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
       <List />
       <hr />
       <IsLogged />
+      <hr />
+      <BasicForm />
 
     </>
   );
