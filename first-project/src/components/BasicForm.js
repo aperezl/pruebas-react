@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const BasicForm = () => {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   return (
     <>
       <form>
-        <input placeholder="Nombre" type="text" />
-        <input placeholder="Apellidos" type="text" />
+        <input onChange={(e) => {setFirstName(e.target.value)}} placeholder="Firstname" type="text" />
+        <input onChange={(e) => {setLastName(e.target.value)}} placeholder="Lastname" type="text" />
         <input type="submit" />
       </form>
     </>
