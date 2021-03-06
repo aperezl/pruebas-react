@@ -1,5 +1,6 @@
 import HelloWorld from './components/HelloWorld'
 import Counter from './components/Counter'
+import List from './components/List'
 
 function App() {
   return (
@@ -9,6 +10,8 @@ function App() {
       <HelloWorld />
       <hr />
       <Counter />
+      <hr />
+      <List />
     </>
   );
 }
