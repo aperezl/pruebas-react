@@ -1,6 +1,22 @@
 import React, { useState } from 'react'
+import uniqid from 'uniqid'
 
 const List = () => {
+
+  const [name, setName] = useState('')
+  const [age, setAge] = useState('')
+  const [users, setUsers] = useState([])
+
+  const addUser = e => {
+    e.preventDefault()
+    const newUser = {
+      id: uniqid(),
+      name,
+      age,
+    }
+    setUsers([...users, newUser])
+  }
+
   return (
     <>
       <h2>Basic Crud App</h2>
@@ -11,14 +27,14 @@ const List = () => {
         </div>
         <div className="flex flex-col">
           <h2>Form</h2>
-          <form className="block">
+          <form onSubmit={addUser} className="block">
             <div>
               <span className="text-gray-700">Name</span>
-              <input className="form-input py-2 px-4 m-4 block w-auto" type="text" placeholder="Name" />
+              <input onChange={e => setName(e.target.value)} className="form-input py-2 px-4 m-4 block w-auto" type="text" placeholder="Name" />
             </div>
             <div>
               <span className="text-gray-700">Age</span>
-              <input className="form-input py-2 px-4 m-4 block w-auto" type="text" placeholder="Age" />
+              <input onChange={e => setAge(e.target.value)} className="form-input py-2 px-4 m-4 block w-auto" type="text" placeholder="Age" />
             </div>
             <div>
             <input
