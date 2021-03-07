@@ -19,6 +19,11 @@ const List = () => {
     setAge('')
   }
 
+  const deleteUser = id => {
+    const newUsers = users.filter( item => item.id !== id)
+    setUsers(newUsers)
+  }
+
   return (
     <>
       <h2>Basic Crud App</h2>
@@ -27,11 +32,14 @@ const List = () => {
         <div className="flex flex-auto">
           <div className="flex flex-col">
             <h2>List</h2>
-            <div>
-              <ul>
+            <div className="block flex">
+              <ul className="w-full">
                 {
                   users.map( item => (
-                    <li key={item.id}>{item.name} ({item.age})</li>
+                    <li className="flex felx-auto w-full block" key={item.id}>
+                      {item.name} ({item.age})
+                      <button onClick={() => {deleteUser(item.id)}} className="block float-right">[ x eliminar]</button>
+                    </li>
                   ))
                 }
               </ul>
