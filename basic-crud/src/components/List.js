@@ -8,9 +8,14 @@ const List = () => {
   const [users, setUsers] = useState([])
   const [editMode, setEditMode] = useState(false)
   const [id, setId] = useState()
+  const [error, setError] = useState(null)
 
   const addUser = e => {
     e.preventDefault()
+    if (!name.trim()) {
+      setError('Missing name field')
+      return
+    }
     const newUser = {
       id: uniqid(),
       name,
@@ -19,6 +24,7 @@ const List = () => {
     setUsers([...users, newUser])
     setName('')
     setAge('')
+    setError(null)
   }
 
   const deleteUser = id => {
@@ -36,11 +42,16 @@ const List = () => {
 
   const editUser = e => {
     e.preventDefault()
+    if (!name.trim()) {
+      setError('Missing name field')
+      return
+    }
     const newUsers = users
     .map(item => item.id === id ? { id, name, age } : item)
     setUsers(newUsers)
     setName('')
     setAge('')
+    setError(null)
     setEditMode(false)
   }
 
@@ -100,6 +111,15 @@ const List = () => {
 
             </div>
           </form>
+          {
+            error !== null ?
+            (
+              <div>{error}</div>
+            ) :
+            (
+              <div></div>
+            )
+          }
         </div>
       </div>
     </>
