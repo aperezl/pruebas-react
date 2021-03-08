@@ -6,6 +6,7 @@ import {
 
 } from 'react-router-dom'
 import Users from './components/Users'
+import User from './components/User'
 
 
 function App() {
@@ -13,8 +14,11 @@ function App() {
     <Router>
       <Link to="/">Users</Link>
       <Switch>
-        <Route path="/">
+        <Route exact path="/">
           <Users />
+        </Route>
+        <Route path="/users/:id">
+          <User  />
         </Route>
       </Switch>
     </Router>
