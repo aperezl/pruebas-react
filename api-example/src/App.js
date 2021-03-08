@@ -1,8 +1,21 @@
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+
+} from 'react-router-dom'
+
 function App() {
   return (
-    <div className="App">
-      <p>api-example</p>
-    </div>
+    <Router>
+      <Link to="/">Users</Link>
+      <Switch>
+        <Route path="/">
+          Users
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
