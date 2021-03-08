@@ -5,6 +5,8 @@ import {
   Switch,
 
 } from 'react-router-dom'
+import Users from './components/Users'
+
 
 function App() {
   return (
@@ -12,7 +14,7 @@ function App() {
       <Link to="/">Users</Link>
       <Switch>
         <Route path="/">
-          Users
+          <Users />
         </Route>
       </Switch>
     </Router>
