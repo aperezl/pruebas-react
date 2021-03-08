@@ -6,6 +6,8 @@ const List = () => {
   const [name, setName] = useState('')
   const [age, setAge] = useState('')
   const [users, setUsers] = useState([])
+  const [editMode, setEditMode] = useState(false)
+  const [id, setId] = useState()
 
   const addUser = e => {
     e.preventDefault()
@@ -24,6 +26,24 @@ const List = () => {
     setUsers(newUsers)
   }
 
+  const edit = item => {
+    setEditMode(true)
+    setId(item.id)
+    setName(item.name)
+    setAge(item.age)
+    console.log(item)
+  }
+
+  const editUser = e => {
+    e.preventDefault()
+    const newUsers = users
+    .map(item => item.id === id ? { id, name, age } : item)
+    setUsers(newUsers)
+    setName('')
+    setAge('')
+    setEditMode(false)
+  }
+
   return (
     <>
       <h2>Basic Crud App</h2>
@@ -38,7 +58,8 @@ const List = () => {
                   users.map( item => (
                     <li className="flex felx-auto w-full block" key={item.id}>
                       {item.name} ({item.age})
-                      <button onClick={() => {deleteUser(item.id)}} className="block float-right">[ x eliminar]</button>
+                      <button onClick={() => {deleteUser(item.id)}} className="block float-right">[ x delete]</button>
+                      <button onClick={() => {edit(item)}} className="block float-right">[ - edit]</button>
                     </li>
                   ))
                 }
@@ -48,7 +69,7 @@ const List = () => {
         </div>
         <div className="flex flex-col">
           <h2>Form</h2>
-          <form onSubmit={addUser} className="block">
+          <form onSubmit={editMode ? editUser : addUser} className="block">
             <div>
               <span className="text-gray-700">Name</span>
               <input
@@ -70,11 +91,13 @@ const List = () => {
               />
             </div>
             <div>
+
             <input
               className="btn-primary"
               type="submit"
-              value="Register"
+              value={ editMode ? 'EDIT USER' : 'REGISTER USER' }
             />
+
             </div>
           </form>
         </div>
