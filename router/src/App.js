@@ -5,16 +5,21 @@ import {
   Link
 } from 'react-router-dom'
 
+import Home from './components/Home'
+import About from './components/About'
+
 function App() {
   return (
     <div className="App">
       <Router>
+        <Link to="/">Home</Link> | 
+        <Link to="/about">About us</Link>
         <Switch>
-          <Route path="/about">
-            About us
+          <Route exact path="/">
+            <Home />
           </Route>
-          <Route path="/">
-            Home
+          <Route path="/about">
+            <About />
           </Route>
         </Switch>
       </Router>
