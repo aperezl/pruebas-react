@@ -4,14 +4,25 @@ import { Auth } from "../firebase.config";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [msgError, setMsgError] = useState(null);
 
   const registerUser = async (e) => {
     e.preventDefault();
     try {
       await Auth.createUserWithEmailAndPassword(email, password);
       alert("User register");
+      setMsgError(null);
     } catch (err) {
-      console.log(err);
+      if (err.code === "auth/invalid-email") {
+        setMsgError("The email address is badly formatted.");
+      }
+      if (err.code === "auth/weak-password") {
+        setMsgError("Password should be at least 6 characters");
+      }
+      if (err.code === "auth/email-already-in-use") {
+        setMsgError("The email address is already in use by another account.");
+      }
+      console.log(err.code);
     }
   };
 
@@ -89,6 +100,11 @@ const Login = () => {
                 Login
               </button>
             </div>
+            {msgError ? (
+              <div className="text-red-800 mt-4 text-center">{msgError}</div>
+            ) : (
+              <span></span>
+            )}
           </form>
         </div>
         <div className="flex items-center justify-center mt-6">
