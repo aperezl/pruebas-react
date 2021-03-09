@@ -16,7 +16,7 @@ function App() {
       
       <Router>
         <Menu />
-        <div className="container mx-auto px-4">  
+        <div className="flex-col md:flex-row justify-between  flex gap-4 items-start mx-4 py-12">  
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <Route path="/admin" component={Admin}></Route>
