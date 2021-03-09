@@ -26,6 +26,30 @@ const Login = () => {
     }
   };
 
+  const loginUser = async () => {
+    try {
+      const user = await Auth.signInWithEmailAndPassword(email, password);
+      if (user) {
+        console.log("user:", user);
+      }
+    } catch (err) {
+      if (err.code === "auth/wrong-password") {
+        setMsgError(
+          "The password is invalid or the user does not have a password."
+        );
+      }
+      if (err.code === "auth/invalid-email") {
+        setMsgError("The email address is badly formatted.");
+      }
+      if (err.code === "auth/too-many-requests") {
+        setMsgError(
+          "Access to this account has been temporarily disabl…setting your password or you can try again later."
+        );
+      }
+      console.log(err);
+    }
+  };
+
   return (
     <div className="mx-auto">
       <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
@@ -97,15 +121,23 @@ const Login = () => {
                 type="submit"
                 className="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
               >
-                Login
+                Register User
               </button>
             </div>
-            {msgError ? (
-              <div className="text-red-800 mt-4 text-center">{msgError}</div>
-            ) : (
-              <span></span>
-            )}
           </form>
+          {msgError ? (
+            <div className="text-red-800 mt-4 text-center">{msgError}</div>
+          ) : (
+            <span></span>
+          )}
+
+          <button
+            onClick={loginUser}
+            type="submit"
+            className="py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+          >
+            Login
+          </button>
         </div>
         <div className="flex items-center justify-center mt-6">
           <a
