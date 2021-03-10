@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Auth } from "../firebase.config";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msgError, setMsgError] = useState(null);
@@ -9,8 +11,8 @@ const Login = () => {
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      await Auth.createUserWithEmailAndPassword(email, password);
-      alert("User register");
+      const user = await Auth.createUserWithEmailAndPassword(email, password);
+      history.push("/");
       setMsgError(null);
     } catch (err) {
       if (err.code === "auth/invalid-email") {
@@ -30,7 +32,7 @@ const Login = () => {
     try {
       const user = await Auth.signInWithEmailAndPassword(email, password);
       if (user) {
-        console.log("user:", user);
+        history.push("/");
       }
     } catch (err) {
       if (err.code === "auth/wrong-password") {
