@@ -11,7 +11,7 @@ const Login = () => {
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      const user = await Auth.createUserWithEmailAndPassword(email, password);
+      await Auth.createUserWithEmailAndPassword(email, password);
       history.push("/");
       setMsgError(null);
     } catch (err) {
@@ -31,6 +31,7 @@ const Login = () => {
   const loginUser = async () => {
     try {
       const user = await Auth.signInWithEmailAndPassword(email, password);
+
       if (user) {
         history.push("/");
       }
