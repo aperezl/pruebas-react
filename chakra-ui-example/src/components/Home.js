@@ -3,7 +3,7 @@ import { Box, Container, useColorMode } from "@chakra-ui/react";
 const Home = () => {
   const { colorMode } = useColorMode();
   return (
-    <Container centerContent marginTop="48">
+    <Container centerContent marginTop="24" marginBottom="24">
       <Box
         w="200px"
         h="15vh"
