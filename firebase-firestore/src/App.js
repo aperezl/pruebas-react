@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { Button, ChakraProvider, Container, Box, FormControl, FormLabel, Heading, Input, Flex } from "@chakra-ui/react"
+import React, { useState, useEffect } from 'react'
+import { Button, ChakraProvider, Container, Box, FormControl, FormLabel, Heading, Input, Flex, UnorderedList, ListItem } from "@chakra-ui/react"
 import { Store } from './firebase.config'
 
 function App() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [error, setError] = useState(null)
+  const [userList, setUserList] = useState([])
   
   const setUsers = async e => {
     console.log('comprobaciones')
@@ -30,11 +31,16 @@ function App() {
     } catch (err) {
       console.log(err)
     }
-    
-
-
-
   }
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const { docs } = await Store.collection('contacts').get()
+      const newArray = docs.map(item => ({ id: item.id, ...item.data() }))
+      setUserList(newArray)
+    } 
+    getUsers()
+  }, [])
   return (
     <ChakraProvider>
       <Container maxW="container.lg">
@@ -57,7 +63,21 @@ function App() {
             </form>
           </Box>
           <Box w="50%">
-            ---
+            <Heading size="lg" paddingBottom="10" as="h1">User's list</Heading>
+            <UnorderedList>
+              {
+                userList.length !== 0 ?
+                (
+                  userList.map(item => (
+                    <ListItem id={item.id} key={item.id}>{item.name} - {item.phone}</ListItem>
+                  ))
+                )
+                :
+                (
+                  <span>No users found</span>
+                )
+              }
+            </UnorderedList>
           </Box>
         </Flex>
       </Container>
