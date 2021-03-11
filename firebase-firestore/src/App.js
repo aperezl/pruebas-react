@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Button, ChakraProvider, Container, Box, FormControl, FormLabel, Heading, Input, Flex } from "@chakra-ui/react"
+import { Store } from './firebase.config'
 
 function App() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
-  const [user, setUser] = useState([])
   const [error, setError] = useState(null)
   
-  const setUsers = e => {
+  const setUsers = async e => {
     console.log('comprobaciones')
     e.preventDefault()
     
@@ -19,6 +19,18 @@ function App() {
       setError('Field phone is empty')
       return
     }
+
+    try {
+      const user = {name, phone}
+      const data = await Store.collection('contacts').add(user)
+      console.log('user added', data)
+      setName('')
+      setPhone('')
+      setError('')
+    } catch (err) {
+      console.log(err)
+    }
+    
 
 
 
@@ -32,11 +44,11 @@ function App() {
               <Heading size="lg" paddingBottom="10" as="h1">User's form</Heading>
               <FormControl id="name">
                 <FormLabel>Name</FormLabel>
-                <Input onChange={e => setName(e.target.value)} type="text"/>
+                <Input value={name} onChange={e => setName(e.target.value)} type="text"/>
               </FormControl>
               <FormControl id="phone">
                 <FormLabel>Telephone number</FormLabel>
-                <Input onChange={e => setPhone(e.target.value)} type="text"/>
+                <Input value={phone} onChange={e => setPhone(e.target.value)} type="text"/>
               </FormControl>
               <FormControl paddingY="4">
               <Button type="submit" width="100%" colorScheme="blue">Register</Button>
