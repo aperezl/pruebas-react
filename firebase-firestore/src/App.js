@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Button, ChakraProvider, Container, Box, FormControl, FormLabel, Heading, Input, Flex, UnorderedList, ListItem } from "@chakra-ui/react"
+import { Button, ChakraProvider, Container, Box, IconButton, FormControl, FormLabel, Heading, Input, Flex, UnorderedList, ListItem } from "@chakra-ui/react"
 import { Store } from './firebase.config'
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 
 function App() {
   const [name, setName] = useState('')
@@ -56,6 +57,11 @@ function App() {
     }
   }
 
+  const beginUpdateUser = async id => {
+    const data = await Store.collection('contacts').doc(id).get()
+    console.log(data)
+  }
+
   
   return (
     <ChakraProvider>
@@ -85,7 +91,11 @@ function App() {
                 userList.length !== 0 ?
                 (
                   userList.map(item => (
-                    <ListItem id={item.id} key={item.id}>{item.name} - {item.phone} <Button onClick={() => deleteUser(item.id)} size="sm" color="white" bg="red.400">X</Button> </ListItem>
+                    <ListItem id={item.id} key={item.id}>
+                      {item.name} - {item.phone}
+                      <IconButton onClick={() => beginUpdateUser(item.id)} size="sm" colorScheme="blue" icon={<EditIcon />}>X</IconButton>
+                      <IconButton onClick={() => deleteUser(item.id)} size="sm" colorScheme="red" icon={<DeleteIcon />}>X</IconButton>
+                      </ListItem>
                   ))
                 )
                 :
