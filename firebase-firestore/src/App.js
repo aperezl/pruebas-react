@@ -8,6 +8,16 @@ function App() {
   const [error, setError] = useState(null)
   const [userList, setUserList] = useState([])
   
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const { docs } = await Store.collection('contacts').get()
+      const newArray = docs.map(item => ({ id: item.id, ...item.data() }))
+      setUserList(newArray)
+    } 
+    getUsers()
+  }, [])
+
   const setUsers = async e => {
     console.log('comprobaciones')
     e.preventDefault()
@@ -23,7 +33,7 @@ function App() {
 
     try {
       const user = {name, phone}
-      const data = await Store.collection('contacts').add(user)
+      await Store.collection('contacts').add(user)
       const { docs } = await Store.collection('contacts').get()
       const newArray = docs.map(item => ({ id: item.id, ...item.data() }))
       setUserList(newArray)
@@ -35,14 +45,18 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    const getUsers = async () => {
+  const deleteUser = async id => {
+    try {
+      await Store.collection('contacts').doc(id).delete()
       const { docs } = await Store.collection('contacts').get()
       const newArray = docs.map(item => ({ id: item.id, ...item.data() }))
       setUserList(newArray)
-    } 
-    getUsers()
-  }, [])
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  
   return (
     <ChakraProvider>
       <Container maxW="container.lg">
@@ -71,7 +85,7 @@ function App() {
                 userList.length !== 0 ?
                 (
                   userList.map(item => (
-                    <ListItem id={item.id} key={item.id}>{item.name} - {item.phone}</ListItem>
+                    <ListItem id={item.id} key={item.id}>{item.name} - {item.phone} <Button onClick={() => deleteUser(item.id)} size="sm" color="white" bg="red.400">X</Button> </ListItem>
                   ))
                 )
                 :
