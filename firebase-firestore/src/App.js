@@ -24,7 +24,9 @@ function App() {
     try {
       const user = {name, phone}
       const data = await Store.collection('contacts').add(user)
-      console.log('user added', data)
+      const { docs } = await Store.collection('contacts').get()
+      const newArray = docs.map(item => ({ id: item.id, ...item.data() }))
+      setUserList(newArray)
       setName('')
       setPhone('')
       setError('')
