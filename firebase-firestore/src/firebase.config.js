@@ -17,5 +17,8 @@ const fireApp = firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 const Auth = fireApp.auth();
 const Store = fireApp.firestore()
+Store.enablePersistence().catch(err => {
+  console.log(err)
+})
 
 export { Auth, Store };
