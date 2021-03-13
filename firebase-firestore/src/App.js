@@ -4,6 +4,8 @@ import { Store } from './firebase.config'
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 
 function App() {
+  const [editMode, setEditMode] = useState(null)
+  const [id, setId] = useState('')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [error, setError] = useState(null)
@@ -58,8 +60,48 @@ function App() {
   }
 
   const beginUpdateUser = async id => {
-    const data = await Store.collection('contacts').doc(id).get()
-    console.log(data)
+    try {
+      const result = await Store.collection('contacts').doc(id).get()
+      const { name, phone } = result.data()
+      setId(id)
+      setName(name)
+      setPhone(phone)
+      setEditMode(true)
+      console.log(result.data())
+    } catch(err) {
+      console.log(err)
+    }
+    
+  }
+
+  const updateUser = async e => {
+    e.preventDefault()
+    
+    if (!name && !name.trim()) {
+      setError('Field name is empty')
+      return
+    }
+    if (!phone && !phone.trim()) {
+      setError('Field phone is empty')
+      return
+    }
+
+    const updatedUser = {
+      name,
+      phone
+    }
+    try {
+      await Store.collection('contacts').doc(id).set(updatedUser)
+      const { docs } = await Store.collection('contacts').get()
+      const newArray = docs.map(item => ({ id: item.id, ...item.data() }))
+      setUserList(newArray)
+      setName('')
+      setPhone('')
+      setError('')
+      setEditMode(null)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   
@@ -68,7 +110,7 @@ function App() {
       <Container maxW="container.lg">
         <Flex>
           <Box w="50%">
-            <form onSubmit={setUsers}>
+            <form onSubmit={ editMode ? updateUser : setUsers}>
               <Heading size="lg" paddingBottom="10" as="h1">User's form</Heading>
               <FormControl id="name">
                 <FormLabel>Name</FormLabel>
@@ -79,7 +121,13 @@ function App() {
                 <Input value={phone} onChange={e => setPhone(e.target.value)} type="text"/>
               </FormControl>
               <FormControl paddingY="4">
-              <Button type="submit" width="100%" colorScheme="blue">Register</Button>
+                {
+                  editMode ?
+                  (<Button type="submit" width="100%" colorScheme="blue">Edit</Button>)
+                  :
+                  (<Button type="submit" width="100%" colorScheme="blue">Register</Button>)
+                }
+              
               </FormControl>
               { error ? (<div>{error}</div>) : (<span></span>) }
             </form>
